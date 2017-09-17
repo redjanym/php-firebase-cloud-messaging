@@ -57,6 +57,11 @@ class Message implements \JsonSerializable
         return $this;
     }
 
+    public function getCollapseKey()
+    {
+        return $this->collapseKey;
+    }
+
     public function setPriority($priority)
     {
         $this->priority = $priority;
