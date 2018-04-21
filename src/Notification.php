@@ -10,6 +10,7 @@ class Notification extends Message
     private $body;
     private $badge;
     private $icon;
+    private $color;
     private $sound;
     private $clickAction;
     private $tag;
@@ -58,6 +59,18 @@ class Notification extends Message
         $this->icon = $icon;
         return $this;
     }
+    
+    /**
+     * android only, set the color background resource as string
+     *
+     * @param string $color
+     * @return $this
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+        return $this;
+    }
 
     public function setClickAction($actionName)
     {
@@ -96,6 +109,9 @@ class Notification extends Message
         }
         if ($this->icon) {
             $jsonData['icon'] = $this->icon;
+        }
+        if ($this->color) {
+            $jsonData['color'] = $this->color;
         }
         if ($this->clickAction) {
             $jsonData['click_action'] = $this->clickAction;
