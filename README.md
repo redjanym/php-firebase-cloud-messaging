@@ -98,3 +98,8 @@ $response = $client->removeTopicSubscription('_SOME_TOPIC_ID_', ['_FIRST_TOKEN_'
 var_dump($response->getStatusCode());
 var_dump($response->getBody()->getContents());
 ```
+
+# Interpreting responses
+Responses given on the HTTP requests are standard according to the FCM documentations. You may find detailed specifications in this links:
+* https://firebase.google.com/docs/cloud-messaging/http-server-ref#interpret-downstream
+* https://firebase.google.com/docs/cloud-messaging/http-server-ref#error-codes
