@@ -22,7 +22,7 @@ Or add this to your composer.json and run "composer update":
 }
 ```
 
-#Send message to **one or multiple** Devices
+# Send message to **one or multiple** Devices
 ```
 use sngrl\PhpFirebaseCloudMessaging\Client;
 use sngrl\PhpFirebaseCloudMessaging\Message;
@@ -46,7 +46,7 @@ var_dump($response->getStatusCode());
 var_dump($response->getBody()->getContents());
 ```
 
-#Send message to Topic
+# Send message to Topic
 Currently sending to topics only supports a single topic as recipient. Mutliple topic as outlined
 in the google docs don't seem to work, yet.
 ```
@@ -72,7 +72,7 @@ var_dump($response->getStatusCode());
 var_dump($response->getBody()->getContents());
 ```
 
-#Subscribe user to the topic
+# Subscribe user to the topic
 ```
 use sngrl\PhpFirebaseCloudMessaging\Client;
 
@@ -85,7 +85,7 @@ var_dump($response->getStatusCode());
 var_dump($response->getBody()->getContents());
 ```
 
-#Remove user subscription to the topic
+# Remove user subscription to the topic
 ```
 use sngrl\PhpFirebaseCloudMessaging\Client;
 
