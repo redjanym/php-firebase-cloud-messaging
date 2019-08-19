@@ -3,7 +3,7 @@
     "description": "PHP API for Firebase Cloud Messaging from Google",
     "license": "MIT",
     "keywords": ["PHP","FCM","Google","Firebase","Cloud","Notifications","Android","iOS","Chrome"],
-    "homepage": "https://github.com/sngrl/php-firebase-cloud-messaging",
+    "homepage": "https://github.com/redjanym/php-firebase-cloud-messaging",
     "authors": [
         {
             "name": "Sngrl",
