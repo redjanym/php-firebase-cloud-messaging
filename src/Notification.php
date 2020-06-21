@@ -7,6 +7,7 @@ namespace sngrl\PhpFirebaseCloudMessaging;
 class Notification extends Message
 {
     private $title;
+    private $subtitle;
     private $body;
     private $badge;
     private $icon;
@@ -14,6 +15,12 @@ class Notification extends Message
     private $sound;
     private $clickAction;
     private $tag;
+    private $contentAvailable;
+    private $bodyLocKey;
+    private $bodyLocArgs;
+    private $titleLocKey;
+    private $titleLocArgs;
+    private $androidChannelId;
 
     public function __construct($title = '', $body = '')
     {
@@ -90,14 +97,72 @@ class Notification extends Message
         return $this;
     }
 
+    public function setContentAvailable($contentAvailable)
+    {
+        $this->contentAvailable = $contentAvailable;
+        return $this;
+    }
+
+    public function setSubtitle($subtitle)
+    {
+        $this->subtitle = $subtitle;
+        return $this;
+    }
+
+    public function setBodyLocKey($bodyLocKey)
+    {
+        $this->bodyLocKey = $bodyLocKey;
+        return $this;
+    }
+
+    public function setBodyLocArgs($bodyLocArgs)
+    {
+        $this->bodyLocArgs = $bodyLocArgs;
+        return $this;
+    }
+
+    public function setTitleLocKey($titleLocKey)
+    {
+        $this->titleLocKey = $titleLocKey;
+        return $this;
+    }
+
+    public function setTitleLocArgs($titleLocArgs)
+    {
+        $this->titleLocArgs = $titleLocArgs;
+        return $this;
+    }
+
+    public function setAndroidChannelId($androidChannelId)
+    {
+        $this->androidChannelId = $androidChannelId;
+        return $this;
+    }
+
     public function hasNotificationData()
     {
-        return $this->title || $this->body || $this->badge || $this->icon || $this->clickAction || $this->sound || $this->tag;
+        return
+            $this->title ||
+            $this->body ||
+            $this->badge ||
+            $this->icon ||
+            $this->clickAction ||
+            $this->sound ||
+            $this->tag ||
+            $this->contentAvailable ||
+            $this->subtitle ||
+            $this->titleLocKey ||
+            $this->titleLocArgs ||
+            $this->bodyLocKey ||
+            $this->bodyLocArgs ||
+            $this->androidChannelId
+        ;
     }
 
     public function jsonSerialize()
     {
         $jsonData = [];
+
         if ($this->title) {
             $jsonData['title'] = $this->title;
         }
@@ -122,6 +187,28 @@ class Notification extends Message
         if ($this->tag) {
             $jsonData['tag'] = $this->tag;
         }
+        if ($this->contentAvailable) {
+            $jsonData['content_available'] = $this->contentAvailable;
+        }
+        if ($this->subtitle) {
+            $jsonData['subtitle'] = $this->subtitle;
+        }
+        if ($this->androidChannelId) {
+            $jsonData['android_channel_id'] = $this->androidChannelId;
+        }
+        if ($this->titleLocKey) {
+            $jsonData['title_loc_key'] = $this->titleLocKey;
+        }
+        if ($this->titleLocArgs) {
+            $jsonData['title_loc_args'] = $this->titleLocArgs;
+        }
+        if ($this->bodyLocKey) {
+            $jsonData['body_loc_key'] = $this->bodyLocKey;
+        }
+        if ($this->bodyLocArgs) {
+            $jsonData['body_loc_args'] = $this->bodyLocArgs;
+        }
+
         return $jsonData;
     }
 }
