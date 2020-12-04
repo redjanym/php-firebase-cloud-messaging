@@ -11,6 +11,7 @@ class Notification extends Message
     private $body;
     private $badge;
     private $icon;
+    private $image;
     private $color;
     private $sound;
     private $clickAction;
@@ -40,6 +41,12 @@ class Notification extends Message
     public function setBody($body)
     {
         $this->body = $body;
+        return $this;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
         return $this;
     }
 
@@ -155,7 +162,8 @@ class Notification extends Message
             $this->titleLocArgs ||
             $this->bodyLocKey ||
             $this->bodyLocArgs ||
-            $this->androidChannelId
+            $this->androidChannelId ||
+            $this->image
         ;
     }
 
@@ -174,6 +182,9 @@ class Notification extends Message
         }
         if ($this->icon) {
             $jsonData['icon'] = $this->icon;
+        }
+        if ($this->image) {
+            $jsonData['image'] = $this->image;
         }
         if ($this->color) {
             $jsonData['color'] = $this->color;
