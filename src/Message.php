@@ -1,6 +1,7 @@
 <?php
 namespace sngrl\PhpFirebaseCloudMessaging;
 
+use ReturnTypeWillChange;
 use sngrl\PhpFirebaseCloudMessaging\Recipient\Recipient;
 use sngrl\PhpFirebaseCloudMessaging\Recipient\Topic;
 use sngrl\PhpFirebaseCloudMessaging\Recipient\Device;
@@ -151,6 +152,7 @@ class Message implements \JsonSerializable
         return $this;
     }
 
+    #[ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $jsonData = $this->jsonData;
