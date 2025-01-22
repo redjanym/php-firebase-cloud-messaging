@@ -1,225 +1,199 @@
 <?php
-namespace sngrl\PhpFirebaseCloudMessaging;
 
-/**
- * @link https://firebase.google.com/docs/cloud-messaging/http-server-ref#notification-payload-support
- */
-class Notification extends Message
+namespace RedjanYm\FCM;
+
+class Notification extends Message implements \JsonSerializable
 {
-    private $title;
-    private $subtitle;
-    private $body;
-    private $badge;
-    private $icon;
-    private $image;
-    private $color;
-    private $sound;
-    private $clickAction;
-    private $tag;
-    private $contentAvailable;
-    private $bodyLocKey;
-    private $bodyLocArgs;
-    private $titleLocKey;
-    private $titleLocArgs;
-    private $androidChannelId;
+    public ?string $title;
+    private ?string $body;
+    private array $data;
+    private ?string $image;
+    private string $androidPriority = 'normal';
+    private int $apnsPriority = 10;
+    private string $ttl = '3600s';
+    private ?string $badge;
+    private ?string $icon;
+    private ?string $color;
+    private ?string $sound;
+    private bool $contentAvailable = true;
+    private ?string $analyticsLabel;
+    private ?string $clickAction;
+    private ?string $androidChannelId;
+    private array $extraNotificationSettings = [];
+    private array $extraFCMOptionsSettings = [];
+    private array $extraAPNSHeadersSettings = [];
+    private array $webPushHeadersSettings = [];
 
-    public function __construct($title = '', $body = '')
-    {
-        if ($title)
-            $this->title = $title;
-        if ($body)
-            $this->body = $body;
-        parent::__construct();
-    }
-
-    public function setTitle($title)
+    public function __construct(string $title = '', string $body = '', array $data = [])
     {
         $this->title = $title;
+        $this->body = $body;
+        $this->data = $data;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
         return $this;
     }
 
-    public function setBody($body)
+    public function setBody(?string $body): self
     {
         $this->body = $body;
+
         return $this;
     }
 
-    public function setImage($image)
+    public function setImage(?string $image): self
     {
         $this->image = $image;
+
         return $this;
     }
 
-    /**
-     * iOS only, will add smal red bubbles indicating the number of notifications to your apps icon
-     *
-     * @param integer $badge
-     * @return $this
-     */
-    public function setBadge($badge)
+    public function setAndroidPriority(string $androidPriority): self
+    {
+        $this->androidPriority = $androidPriority;
+
+        return $this;
+    }
+
+    public function setTtl(string $ttl): self
+    {
+        $this->ttl = $ttl;
+
+        return $this;
+    }
+
+    public function setBadge(?string $badge): self
     {
         $this->badge = $badge;
+
         return $this;
     }
 
-    /**
-     * android only, set the name of your drawable resource as string
-     *
-     * @param string $icon
-     * @return $this
-     */
-    public function setIcon($icon)
+    public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
+
         return $this;
     }
-    
-    /**
-     * android only, set the color background resource as string
-     *
-     * @param string $color
-     * @return $this
-     */
-    public function setColor($color)
+
+    public function setColor(?string $color): self
     {
         $this->color = $color;
+
         return $this;
     }
 
-    public function setClickAction($actionName)
+    public function setClickAction(?string $actionName): self
     {
         $this->clickAction = $actionName;
+
         return $this;
     }
 
-    public function setSound($sound)
+    public function setSound(?string $sound): self
     {
         $this->sound = $sound;
+
         return $this;
     }
 
-    public function setTag($tag)
-    {
-        $this->tag = $tag;
-        return $this;
-    }
-
-    public function setContentAvailable($contentAvailable)
-    {
-        $this->contentAvailable = $contentAvailable;
-        return $this;
-    }
-
-    public function setSubtitle($subtitle)
-    {
-        $this->subtitle = $subtitle;
-        return $this;
-    }
-
-    public function setBodyLocKey($bodyLocKey)
-    {
-        $this->bodyLocKey = $bodyLocKey;
-        return $this;
-    }
-
-    public function setBodyLocArgs($bodyLocArgs)
-    {
-        $this->bodyLocArgs = $bodyLocArgs;
-        return $this;
-    }
-
-    public function setTitleLocKey($titleLocKey)
-    {
-        $this->titleLocKey = $titleLocKey;
-        return $this;
-    }
-
-    public function setTitleLocArgs($titleLocArgs)
-    {
-        $this->titleLocArgs = $titleLocArgs;
-        return $this;
-    }
-
-    public function setAndroidChannelId($androidChannelId)
+    public function setAndroidChannelId(string $androidChannelId): self
     {
         $this->androidChannelId = $androidChannelId;
+
         return $this;
     }
 
-    public function hasNotificationData()
+    public function setAnalyticsLabel(?string $analyticsLabel): self
     {
-        return
-            $this->title ||
-            $this->body ||
-            $this->badge ||
-            $this->icon ||
-            $this->clickAction ||
-            $this->sound ||
-            $this->tag ||
-            $this->contentAvailable ||
-            $this->subtitle ||
-            $this->titleLocKey ||
-            $this->titleLocArgs ||
-            $this->bodyLocKey ||
-            $this->bodyLocArgs ||
-            $this->androidChannelId ||
-            $this->image
-        ;
+        $this->analyticsLabel = $analyticsLabel;
+
+        return $this;
+    }
+
+    public function setContentAvailable(bool $contentAvailable): self
+    {
+        $this->contentAvailable = $contentAvailable;
+
+        return $this;
     }
 
     public function jsonSerialize()
     {
-        $jsonData = [];
-
-        if ($this->title) {
-            $jsonData['title'] = $this->title;
-        }
-        if ($this->body) {
-            $jsonData['body'] = $this->body;
-        }
-        if ($this->badge) {
-            $jsonData['badge'] = $this->badge;
-        }
-        if ($this->icon) {
-            $jsonData['icon'] = $this->icon;
-        }
-        if ($this->image) {
-            $jsonData['image'] = $this->image;
-        }
-        if ($this->color) {
-            $jsonData['color'] = $this->color;
-        }
-        if ($this->clickAction) {
-            $jsonData['click_action'] = $this->clickAction;
-        }
-        if ($this->sound) {
-            $jsonData['sound'] = $this->sound;
-        }
-        if ($this->tag) {
-            $jsonData['tag'] = $this->tag;
-        }
-        if ($this->contentAvailable) {
-            $jsonData['content_available'] = $this->contentAvailable;
-        }
-        if ($this->subtitle) {
-            $jsonData['subtitle'] = $this->subtitle;
-        }
-        if ($this->androidChannelId) {
-            $jsonData['android_channel_id'] = $this->androidChannelId;
-        }
-        if ($this->titleLocKey) {
-            $jsonData['title_loc_key'] = $this->titleLocKey;
-        }
-        if ($this->titleLocArgs) {
-            $jsonData['title_loc_args'] = $this->titleLocArgs;
-        }
-        if ($this->bodyLocKey) {
-            $jsonData['body_loc_key'] = $this->bodyLocKey;
-        }
-        if ($this->bodyLocArgs) {
-            $jsonData['body_loc_args'] = $this->bodyLocArgs;
-        }
-
-        return $jsonData;
+        return [
+            'notification' => [
+                // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#notification
+                'title' => $this->title,
+                'body' => $this->body,
+                'image' => $this->image,
+            ],
+            'data' => $this->data,
+            'android' => [
+                // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#androidconfig
+                'ttl' => $this->ttl,
+                'priority' => $this->androidPriority,
+                'notification' => [
+                    'title' => $this->title,
+                    'body' => $this->body,
+                    'icon' => $this->icon,
+                    'color' => $this->color,
+                    'sound' => $this->sound,
+                    'click_action' => $this->clickAction,
+                    'channel_id' => $this->androidChannelId,
+                    ...$this->extraNotificationSettings,
+                ],
+                'fcm_options' => [
+                    // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#fcmoptions
+                    'analytics_label' => $this->analyticsLabel,
+                    ...$this->extraFCMOptionsSettings,
+                ],
+            ],
+            'apns' => [
+                // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#apnsconfig
+                'headers' => [
+                    'apns-priority' => $this->apnsPriority,
+                    ...$this->extraAPNSHeadersSettings,
+                ],
+                'payload' => [
+                    'aps' => [
+                        'alert' => [
+                            'title' => $this->title,
+                            'body' => $this->body,
+                        ],
+                        'sound' => $this->sound,
+                        'badge' => $this->badge,
+                        'content_available' => $this->contentAvailable,
+                    ],
+                ],
+                'fcm_options' => [
+                    // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#fcmoptions
+                    'analytics_label' => $this->analyticsLabel,
+                    ...$this->extraFCMOptionsSettings,
+                ],
+            ],
+            'webpush' => [
+                // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#webpushconfig
+                'headers' => $this->webPushHeadersSettings,
+                'notification' => [
+                    'title' => $this->title,
+                    'body' => $this->body,
+                    'icon' => $this->icon,
+                ],
+                'fcm_options' => [
+                    // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#webpushfcmoptions
+                    'analytics_label' => $this->analyticsLabel,
+                    ...$this->extraFCMOptionsSettings,
+                ],
+            ],
+            'fcm_options' => [
+                // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#fcmoptions
+                'analytics_label' => $this->analyticsLabel,
+                ...$this->extraFCMOptionsSettings,
+            ],
+        ];
     }
 }

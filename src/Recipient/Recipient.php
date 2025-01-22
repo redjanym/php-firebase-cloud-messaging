@@ -1,18 +1,8 @@
 <?php
-namespace sngrl\PhpFirebaseCloudMessaging\Recipient;
 
-class Recipient
+namespace RedjanYm\FCM\Recipient;
+
+interface Recipient
 {
-    private $to;
-
-    public function setTo($to)
-    {
-        $this->to = $to;
-        return $this;
-    }
-
-    public function toJson()
-    {
-        return $this->to;
-    }
+    public function getTarget(): string;
 }

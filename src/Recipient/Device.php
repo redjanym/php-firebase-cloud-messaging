@@ -1,17 +1,17 @@
 <?php
-namespace sngrl\PhpFirebaseCloudMessaging\Recipient;
 
-class Device extends Recipient
+namespace RedjanYm\FCM\Recipient;
+
+class Device implements Recipient
 {
-    private $token;
+    private string $token;
 
-    public function __construct($token)
+    public function __construct(string $token)
     {
         $this->token = $token;
-        return $this;
     }
 
-    public function getToken()
+    public function getTarget(): string
     {
         return $this->token;
     }

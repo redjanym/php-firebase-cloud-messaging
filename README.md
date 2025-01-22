@@ -25,10 +25,10 @@ Or add this to your composer.json and run "composer update":
 
 # Send message to **one or multiple** Devices
 ```
-use sngrl\PhpFirebaseCloudMessaging\Client;
-use sngrl\PhpFirebaseCloudMessaging\Message;
-use sngrl\PhpFirebaseCloudMessaging\Recipient\Device;
-use sngrl\PhpFirebaseCloudMessaging\Notification;
+use RedjanYm\FCM\Client;
+use RedjanYm\FCM\Message;
+use RedjanYm\FCM\Recipient\Device;
+use RedjanYm\FCM\Notification;
 
 $server_key = '_YOUR_SERVER_KEY_';
 $client = new Client();
@@ -51,10 +51,10 @@ var_dump($response->getBody()->getContents());
 Currently sending to topics only supports a single topic as recipient. Mutliple topic as outlined
 in the google docs don't seem to work, yet.
 ```
-use sngrl\PhpFirebaseCloudMessaging\Client;
-use sngrl\PhpFirebaseCloudMessaging\Message;
-use sngrl\PhpFirebaseCloudMessaging\Recipient\Topic;
-use sngrl\PhpFirebaseCloudMessaging\Notification;
+use RedjanYm\FCM\Client;
+use RedjanYm\FCM\Message;
+use RedjanYm\FCM\Recipient\Topic;
+use RedjanYm\FCM\Notification;
 
 $server_key = '_YOUR_SERVER_KEY_';
 $client = new Client();
@@ -75,7 +75,7 @@ var_dump($response->getBody()->getContents());
 
 # Subscribe user to the topic
 ```
-use sngrl\PhpFirebaseCloudMessaging\Client;
+use RedjanYm\FCM\Client;
 
 $server_key = '_YOUR_SERVER_KEY_';
 $client = new Client();
@@ -88,7 +88,7 @@ var_dump($response->getBody()->getContents());
 
 # Remove user subscription to the topic
 ```
-use sngrl\PhpFirebaseCloudMessaging\Client;
+use RedjanYm\FCM\Client;
 
 $server_key = '_YOUR_SERVER_KEY_';
 $client = new Client();
