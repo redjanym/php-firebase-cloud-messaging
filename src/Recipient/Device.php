@@ -15,4 +15,9 @@ class Device implements Recipient
     {
         return $this->token;
     }
+
+    public function getType(): string
+    {
+        return 'topic';
+    }
 }

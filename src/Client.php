@@ -25,8 +25,11 @@ class Client implements ClientInterface
 
     public function setServiceAccountPath(string $serviceAccountPath): self
     {
-        $this->serviceAccountPath = $serviceAccountPath;
+        if (file_exists($serviceAccountPath) === false) {
+            throw new \InvalidArgumentException('Service account file does not exist!');
+        }
 
+        $this->serviceAccountPath = $serviceAccountPath;
         return $this;
     }
 
@@ -52,7 +55,7 @@ class Client implements ClientInterface
     /**
      * @throws \GuzzleHttp\Exception\RequestException
      */
-    public function send(Message $message): ResponseInterface
+    public function send(Notification $message): ResponseInterface
     {
         return $this->guzzleClient->post(
             $this->getApiUrl(),

@@ -1,0 +1,21 @@
+<?php
+
+include_once '../vendor/autoload.php';
+
+use RedjanYm\FCM\Client;
+use RedjanYm\FCM\Notification;
+use RedjanYm\FCM\Recipient\Device;
+
+$serviceAccountPath = 'service-account.json';
+$testToken = '123456789';
+
+$client = new Client($serviceAccountPath);
+$client->applyCredentials();
+
+$recipient = new Device($testToken);
+
+$notification = new Notification($recipient, 'Title', 'Body', ['key' => 'value']);
+
+$response = $client->send($notification);
+
+var_dump($response->getBody()->getContents());
