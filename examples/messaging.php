@@ -10,7 +10,6 @@ $serviceAccountPath = 'service-account.json';
 $testToken = '123456789';
 
 $client = new Client($serviceAccountPath);
-$client->applyCredentials();
 
 $recipient = new Device($testToken);
 

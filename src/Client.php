@@ -21,6 +21,7 @@ class Client implements ClientInterface
 
         $this->serviceAccountPath = $serviceAccountPath;
         $this->guzzleClient = new \GuzzleHttp\Client();
+        $this->applyCredentials();
     }
 
     public function setServiceAccountPath(string $serviceAccountPath): self
@@ -30,10 +31,11 @@ class Client implements ClientInterface
         }
 
         $this->serviceAccountPath = $serviceAccountPath;
+        $this->applyCredentials();
         return $this;
     }
 
-    public function applyCredentials(): self
+    private function applyCredentials(): self
     {
         $this->projectId = \json_decode(file_get_contents($this->serviceAccountPath), true)['project_id'];
         $this->accessToken = $this->getAccessToken();

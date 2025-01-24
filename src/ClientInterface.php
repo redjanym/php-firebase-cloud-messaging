@@ -9,6 +9,4 @@ interface ClientInterface
     public function setServiceAccountPath(string $serviceAccountPath): self;
 
     public function send(Notification $message): ResponseInterface;
-
-    public function applyCredentials(): self;
 }
