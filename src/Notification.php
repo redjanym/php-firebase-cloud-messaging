@@ -41,7 +41,6 @@ class Notification implements \JsonSerializable
         return [
             $this->recipient->getType() => $this->recipient->getTarget(),
             'notification' => [
-                // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#notification
                 'title' => $this->title,
                 'body' => $this->body,
                 'image' => $this->image,

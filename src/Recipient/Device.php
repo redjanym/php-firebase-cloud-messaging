@@ -18,6 +18,6 @@ class Device implements Recipient
 
     public function getType(): string
     {
-        return 'topic';
+        return 'token';
     }
 }

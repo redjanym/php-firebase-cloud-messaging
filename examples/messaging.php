@@ -17,5 +17,4 @@ $recipient = new Device($testToken);
 $notification = new Notification($recipient, 'Title', 'Body', ['key' => 'value']);
 
 $response = $client->send($notification);
-
-var_dump($response->getBody()->getContents());
+dump($response->getBody()->getContents());
