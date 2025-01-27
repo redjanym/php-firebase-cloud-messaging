@@ -1,123 +1,73 @@
 <?php
-namespace sngrl\PhpFirebaseCloudMessaging;
+
+namespace RedjanYm\FCM;
 
 use GuzzleHttp;
+use Psr\Http\Message\ResponseInterface;
 
-/**
- * @author sngrl
- */
 class Client implements ClientInterface
 {
-    const DEFAULT_API_URL = 'https://fcm.googleapis.com/fcm/send';
-    const DEFAULT_TOPIC_ADD_SUBSCRIPTION_API_URL = 'https://iid.googleapis.com/iid/v1:batchAdd';
-    const DEFAULT_TOPIC_REMOVE_SUBSCRIPTION_API_URL = 'https://iid.googleapis.com/iid/v1:batchRemove';
+    const DEFAULT_API_URL = 'https://fcm.googleapis.com/v1/projects/{PROJECT_ID}/messages:send';
+    private string $projectId;
+    private string $serviceAccountPath;
+    private string $accessToken;
+    private GuzzleHttp\Client $guzzleClient;
 
-    private $apiKey;
-    private $proxyApiUrl;
-    private $guzzleClient;
-
-    public function __construct()
+    public function __construct(string $serviceAccountPath)
     {
+        if (file_exists($serviceAccountPath) === false) {
+            throw new \InvalidArgumentException('Service account file does not exist!');
+        }
 
+        $this->serviceAccountPath = $serviceAccountPath;
         $this->guzzleClient = new \GuzzleHttp\Client();
+        $this->applyCredentials();
     }
 
-    /**
-     * add your server api key here
-     * read how to obtain an api key here: https://firebase.google.com/docs/server/setup#prerequisites
-     *
-     * @param string $apiKey
-     *
-     * @return \sngrl\PhpFirebaseCloudMessaging\Client
-     */
-    public function setApiKey($apiKey)
+    public function setServiceAccountPath(string $serviceAccountPath): self
     {
-        $this->apiKey = $apiKey;
+        if (file_exists($serviceAccountPath) === false) {
+            throw new \InvalidArgumentException('Service account file does not exist!');
+        }
+
+        $this->serviceAccountPath = $serviceAccountPath;
+        $this->applyCredentials();
         return $this;
     }
 
-    /**
-     * people can overwrite the api url with a proxy server url of their own
-     *
-     * @param string $url
-     *
-     * @return \sngrl\PhpFirebaseCloudMessaging\Client
-     */
-    public function setProxyApiUrl($url)
+    private function applyCredentials(): self
     {
-        $this->proxyApiUrl = $url;
+        $this->projectId = \json_decode(file_get_contents($this->serviceAccountPath), true)['project_id'];
+        $this->accessToken = $this->getAccessToken();
+
         return $this;
     }
 
+    private function getAccessToken(): string
+    {
+        $client = new \Google\Client();
+        $client->setAuthConfig($this->serviceAccountPath);
+        $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+        $client->useApplicationDefaultCredentials();
+        $token = $client->fetchAccessTokenWithAssertion();
+
+        return $token['access_token'];
+    }
+
     /**
-     * sends your notification to the google servers and returns a guzzle repsonse object
-     * containing their answer.
-     *
-     * @param Message $message
-     *
-     * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\RequestException
      */
-    public function send(Message $message)
+    public function send(Notification $message): ResponseInterface
     {
         return $this->guzzleClient->post(
             $this->getApiUrl(),
             [
                 'headers' => [
-                    'Authorization' => sprintf('key=%s', $this->apiKey),
+                    'Authorization' => sprintf('Bearer %s', $this->accessToken),
                     'Content-Type' => 'application/json'
                 ],
-                'body' => json_encode($message)
-            ]
-        );
-    }
-
-    /**
-     * @param integer $topic_id
-     * @param array|string $recipients_tokens
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function addTopicSubscription($topic_id, $recipients_tokens)
-    {
-        return $this->processTopicSubscription($topic_id, $recipients_tokens, self::DEFAULT_TOPIC_ADD_SUBSCRIPTION_API_URL);
-    }
-
-
-    /**
-     * @param integer $topic_id
-     * @param array|string $recipients_tokens
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function removeTopicSubscription($topic_id, $recipients_tokens)
-    {
-        return $this->processTopicSubscription($topic_id, $recipients_tokens, self::DEFAULT_TOPIC_REMOVE_SUBSCRIPTION_API_URL);
-    }
-
-
-    /**
-     * @param integer $topic_id
-     * @param array|string $recipients_tokens
-     * @param string $url
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    protected function processTopicSubscription($topic_id, $recipients_tokens, $url)
-    {
-        if (!is_array($recipients_tokens))
-            $recipients_tokens = [$recipients_tokens];
-
-        return $this->guzzleClient->post(
-            $url,
-            [
-                'headers' => [
-                    'Authorization' => sprintf('key=%s', $this->apiKey),
-                    'Content-Type' => 'application/json'
-                ],
-                'body' => json_encode([
-                    'to' => '/topics/' . $topic_id,
-                    'registration_tokens' => $recipients_tokens,
+                'body' => \json_encode([
+                    'message' => $message,
                 ])
             ]
         );
@@ -125,6 +75,6 @@ class Client implements ClientInterface
 
     private function getApiUrl()
     {
-        return isset($this->proxyApiUrl) ? $this->proxyApiUrl : self::DEFAULT_API_URL;
+        return str_replace('{PROJECT_ID}', $this->projectId, self::DEFAULT_API_URL);
     }
 }

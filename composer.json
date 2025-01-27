@@ -1,35 +1,26 @@
 {
     "name": "redjanym/php-firebase-cloud-messaging",
-    "description": "PHP API for Firebase Cloud Messaging from Google",
+    "description": "PHP SDK for Firebase Cloud Messaging from Google",
     "license": "MIT",
-    "keywords": ["PHP","FCM","Google","Firebase","Cloud","Notifications","Android","iOS","Chrome"],
+    "keywords": ["PHP","FCM","Google","Firebase","Cloud","Notifications","Android","iOS"],
     "homepage": "https://github.com/redjanym/php-firebase-cloud-messaging",
     "authors": [
         {
-            "name": "Sngrl",
-            "email": "i@sngrl.ru"
-        },
-        {
             "name": "Redjan Ymeraj",
-            "email": "ymerajr@yahoo.com"
+            "email": "ymerajredjan@gmail.com"
         }
     ],
     "require": {
         "guzzlehttp/guzzle": "*",
-        "php": ">=5.5"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "*",
-        "mockery/mockery" : "*"
+        "php": ">=7.4",
+        "google/apiclient": "^2.18"
     },
     "autoload": {
         "psr-4": {
-            "sngrl\\PhpFirebaseCloudMessaging\\": "src/"
+            "RedjanYm\\FCM\\": "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "sngrl\\PhpFirebaseCloudMessaging\\Tests\\": "tests/"
-        }
+    "require-dev": {
+        "symfony/var-dumper": "^7.2"
     }
 }
