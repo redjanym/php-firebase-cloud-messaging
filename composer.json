@@ -13,7 +13,7 @@
     "require": {
         "guzzlehttp/guzzle": "*",
         "php": ">=7.4",
-        "google/apiclient": "^2.18"
+        "google/apiclient": "*"
     },
     "autoload": {
         "psr-4": {
@@ -21,6 +21,6 @@
         }
     },
     "require-dev": {
-        "symfony/var-dumper": "^7.2"
+        "symfony/var-dumper": "*"
     }
 }
