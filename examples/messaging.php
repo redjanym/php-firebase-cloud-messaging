@@ -10,9 +10,7 @@ $serviceAccountPath = 'service-account.json';
 $testToken = '123456789';
 
 $client = new Client($serviceAccountPath);
-
 $recipient = new Device($testToken);
-
 $notification = new Notification($recipient, 'Title', 'Body', ['key' => 'value']);
 
 $response = $client->send($notification);
