@@ -19,8 +19,5 @@
         "psr-4": {
             "RedjanYm\\FCM\\": "src/"
         }
-    },
-    "require-dev": {
-        "symfony/var-dumper": "*"
     }
 }
