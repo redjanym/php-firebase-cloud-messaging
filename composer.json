@@ -19,5 +19,13 @@
         "psr-4": {
             "RedjanYm\\FCM\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RedjanYm\\FCM\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.1"
     }
 }

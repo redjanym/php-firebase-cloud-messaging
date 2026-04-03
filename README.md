@@ -94,6 +94,27 @@ $notification->extraAPNSHeadersSettings = ['apns-collapse-id' => 'campaign'];
 $notification->webPushHeadersSettings = ['Urgency' => 'high'];
 ```
 
+## Testing
+
+Install dev dependencies and run the test suite with PHPUnit:
+
+```bash
+composer install
+vendor/bin/phpunit
+```
+
+To run a specific test file:
+
+```bash
+vendor/bin/phpunit tests/NotificationTest.php
+```
+
+To run a specific test method:
+
+```bash
+vendor/bin/phpunit --filter testJsonSerializeWithTopic
+```
+
 ## Migrating from V1
 
 V2 of this package introduces breaking changes due to the migration from the legacy FCM API to the HTTP V1 API. The new structure is still simple and very similar to the previous one.
