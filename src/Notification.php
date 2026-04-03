@@ -50,7 +50,7 @@ class Notification implements \JsonSerializable
                 // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#androidconfig
                 'ttl' => $this->ttl,
                 'priority' => $this->androidPriority,
-                'notification' => [
+                'notification' => array_merge([
                     'title' => $this->title,
                     'body' => $this->body,
                     'icon' => $this->icon,
@@ -58,20 +58,17 @@ class Notification implements \JsonSerializable
                     'sound' => $this->sound,
                     'click_action' => $this->clickAction,
                     'channel_id' => $this->androidChannelId,
-                    ...$this->extraNotificationSettings,
-                ],
-                'fcm_options' => [
+                ], $this->extraNotificationSettings),
+                'fcm_options' => array_merge([
                     // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#fcmoptions
                     'analytics_label' => $this->analyticsLabel,
-                    ...$this->extraFCMOptionsSettings,
-                ],
+                ], $this->extraFCMOptionsSettings),
             ],
             'apns' => [
                 // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#apnsconfig
-                'headers' => [
+                'headers' => array_merge([
                     'apns-priority' => $this->apnsPriority,
-                    ...$this->extraAPNSHeadersSettings,
-                ],
+                ], $this->extraAPNSHeadersSettings),
                 'payload' => [
                     'aps' => [
                         'alert' => [
@@ -83,11 +80,10 @@ class Notification implements \JsonSerializable
                         'content_available' => $this->contentAvailable,
                     ],
                 ],
-                'fcm_options' => [
+                'fcm_options' => array_merge([
                     // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#fcmoptions
                     'analytics_label' => $this->analyticsLabel,
-                    ...$this->extraFCMOptionsSettings,
-                ],
+                ], $this->extraFCMOptionsSettings),
             ],
             'webpush' => array_merge([
                     // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#webpushconfig
@@ -96,20 +92,18 @@ class Notification implements \JsonSerializable
                         'body' => $this->body,
                         'icon' => $this->icon,
                     ],
-                    'fcm_options' => [
+                    'fcm_options' => array_merge([
                         // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#webpushfcmoptions
                         'analytics_label' => $this->analyticsLabel,
-                        ...$this->extraFCMOptionsSettings,
-                    ],
+                    ], $this->extraFCMOptionsSettings),
                     'data' => $this->data,
                 ],
                 $this->webPushHeadersSettings != [] ? ['headers' => $this->webPushHeadersSettings] : [],
             ),
-            'fcm_options' => [
+            'fcm_options' => array_merge([
                 // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#fcmoptions
                 'analytics_label' => $this->analyticsLabel,
-                ...$this->extraFCMOptionsSettings,
-            ],
+            ], $this->extraFCMOptionsSettings),
         ];
     }
 }
